@@ -72,46 +72,54 @@
                 applicantsList.innerHTML = '';
                 boletasButtons.innerHTML = '';
 
-                // Construir lista de solicitantes
+                // Construir lista de solicitantes usando lo que el cliente seleccionó
                 const people = [];
-                if (nombre) people.push({ name: nombre, doc: documento });
-                if (num === 2 && nombre2) people.push({ name: nombre2, doc: documento2 });
-
-                if (people.length === 0) {
-                    applicantsList.innerHTML = '<p>No hay datos ingresados.</p>';
-                } else {
-                    const ul = document.createElement('ul');
-                    ul.style.listStyle = 'none';
-                    ul.style.padding = '0';
-                    people.forEach((p, i) => {
-                        const li = document.createElement('li');
-                        li.style.marginBottom = '6px';
-                        li.textContent = `${i+1}° Persona: ${p.name} — DNI: ${p.doc}`;
-                        ul.appendChild(li);
-                    });
-                    applicantsList.appendChild(ul);
+                // Siempre contamos la primera persona si existe
+                people.push({ name: nombre || 'No ingresado', doc: documento || 'No ingresado' });
+                // Si el cliente indicó 2 personas, añadimos la segunda aunque falten datos
+                if (num === 2) {
+                    people.push({ name: nombre2 || 'No ingresado', doc: documento2 || 'No ingresado' });
                 }
 
-                // Determinar monto total y número de boletas
+                // Mostrar la lista de solicitantes
+                const ul = document.createElement('ul');
+                ul.style.listStyle = 'none';
+                ul.style.padding = '0';
+                people.forEach((p, i) => {
+                    const li = document.createElement('li');
+                    li.style.marginBottom = '6px';
+                    li.textContent = `${i+1}° Persona: ${p.name} — DNI: ${p.doc}`;
+                    ul.appendChild(li);
+                });
+                applicantsList.appendChild(ul);
+
+                // Determinar monto total y número de boletas basados en la elección del cliente
                 const singleAmount = 20000;
-                const totalPeople = people.length || 1;
+                const totalPeople = num === 2 ? 2 : 1;
                 const totalAmount = singleAmount * totalPeople;
                 depositAmountEl.textContent = `$${totalAmount.toLocaleString('es-AR')}`;
 
-                // Generar botones: por cada persona 1 CENAT y 1 CEPAT
+                // Generar botones: por cada persona 1 CENAT y 1 CEPAT (1 persona -> 2 boletas; 2 personas -> 4 boletas)
                 people.forEach((p, i) => {
+                    const wrapper = document.createElement('div');
+                    wrapper.style.marginBottom = '8px';
+
                     const cenat = document.createElement('a');
                     cenat.href = '#';
                     cenat.className = 'boleta-button boleta-cenat';
                     cenat.textContent = `${i+1}° - BOLETA CENAT`;
-                    boletasButtons.appendChild(cenat);
+                    cenat.style.display = 'inline-block';
+                    cenat.style.marginRight = '8px';
+                    wrapper.appendChild(cenat);
 
                     const cepat = document.createElement('a');
                     cepat.href = '#';
                     cepat.className = 'boleta-button boleta-cepat';
-                    cepat.style.marginLeft = '8px';
                     cepat.textContent = `${i+1}° - BOLETA CEPAT`;
-                    boletasButtons.appendChild(cepat);
+                    cepat.style.display = 'inline-block';
+                    wrapper.appendChild(cepat);
+
+                    boletasButtons.appendChild(wrapper);
                 });
             })();
             </script>
