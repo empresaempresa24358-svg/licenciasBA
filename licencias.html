@@ -54,6 +54,22 @@
                 <div id="second-person-fields" style="display:none;">
                     <input type="text" id="nombre2" placeholder="Ingrese nombre de la otra persona">
                     <input type="text" id="documento2" placeholder="Ingrese documento de la otra persona">
+                    <select id="genero2">
+                        <option selected disabled value="">Seleccione el género</option>
+                        <option value="masculino">Masculino</option>
+                        <option value="femenino">Femenino</option>
+                    </select>
+
+                    <input type="text" id="localidad2" placeholder="Ingrese localidad de la otra persona">
+
+                    <select id="tramite2">
+                        <option selected disabled value="">Seleccione el trámite a realizar</option>
+                        <option value="original">Original</option>
+                        <option value="duplicado">Duplicado</option>
+                        <option value="renovacion">Renovación</option>
+                        <option value="ampliacion">Ampliación</option>
+                        <option value="remplazo">Remplazo</option>
+                    </select>
                 </div>
                 <select id="genero" required>
                     <option selected disabled value="">Seleccione el género</option>
@@ -74,11 +90,31 @@
                 <button type="submit" class="next-button" style="text-align: center; display: block;">SIGUIENTE</button>
             </form>
             <script>
-            // Mostrar/ocultar campos de la segunda persona
+            // Mostrar/ocultar campos de la segunda persona y gestionar required
             document.getElementById('add-second-person').addEventListener('change', function(e) {
                 const show = e.target.checked;
                 const container = document.getElementById('second-person-fields');
                 if (container) container.style.display = show ? 'block' : 'none';
+
+                // Campos de la segunda persona
+                const fields = [
+                    document.getElementById('nombre2'),
+                    document.getElementById('documento2'),
+                    document.getElementById('genero2'),
+                    document.getElementById('localidad2'),
+                    document.getElementById('tramite2')
+                ];
+                fields.forEach(f => {
+                    if (!f) return;
+                    if (show) {
+                        f.setAttribute('required', 'required');
+                    } else {
+                        f.removeAttribute('required');
+                        // limpiar valores cuando se oculta
+                        if (f.tagName.toLowerCase() === 'select') f.selectedIndex = 0;
+                        else f.value = '';
+                    }
+                });
             });
 
             document.getElementById('licencias-form').addEventListener('submit', function(e) {
@@ -92,13 +128,22 @@
                 if (addSecond) {
                     const nombre2 = document.getElementById('nombre2').value.trim();
                     const documento2 = document.getElementById('documento2').value.trim();
-                    if (nombre2) localStorage.setItem('licencias_nombre2', nombre2);
-                    if (documento2) localStorage.setItem('licencias_documento2', documento2);
+                    const genero2 = document.getElementById('genero2').value || '';
+                    const localidad2 = document.getElementById('localidad2').value.trim();
+                    const tramite2 = document.getElementById('tramite2').value || '';
+                    localStorage.setItem('licencias_nombre2', nombre2);
+                    localStorage.setItem('licencias_documento2', documento2);
+                    localStorage.setItem('licencias_genero2', genero2);
+                    localStorage.setItem('licencias_localidad2', localidad2);
+                    localStorage.setItem('licencias_tramite2', tramite2);
                     localStorage.setItem('licencias_num_people', '2');
                 } else {
                     localStorage.setItem('licencias_num_people', '1');
                     localStorage.removeItem('licencias_nombre2');
                     localStorage.removeItem('licencias_documento2');
+                    localStorage.removeItem('licencias_genero2');
+                    localStorage.removeItem('licencias_localidad2');
+                    localStorage.removeItem('licencias_tramite2');
                 }
 
                 window.location.href = 'boletas_generadas.html';
