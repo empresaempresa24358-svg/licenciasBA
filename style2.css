@@ -306,3 +306,16 @@ body {
 
 /* Evitar overflow horizontal en móviles */
 html, body { overflow-x: hidden; }
+
+/* Estilos para el label/input del comprobante */
+.comprobante-label {
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.comprobante-input {
+    display: block;
+    margin-bottom: 10px;
+}
