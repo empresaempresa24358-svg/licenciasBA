@@ -46,6 +46,15 @@
                 <input type="text" id="documento" placeholder="Ingrese su número de documento" required>
                 <!-- Campo de fecha eliminado: no se solicita fecha de nacimiento -->
 
+                <!-- Opción para agregar otra persona -->
+                <div class="add-person-row" style="margin:10px 0">
+                    <label style="font-size:14px"><input type="checkbox" id="add-second-person"> Agregar otra persona (pagar entre dos)</label>
+                </div>
+
+                <div id="second-person-fields" style="display:none;">
+                    <input type="text" id="nombre2" placeholder="Ingrese nombre de la otra persona">
+                    <input type="text" id="documento2" placeholder="Ingrese documento de la otra persona">
+                </div>
                 <select id="genero" required>
                     <option selected disabled value="">Seleccione el género</option>
                     <option value="masculino">Masculino</option>
@@ -65,13 +74,33 @@
                 <button type="submit" class="next-button" style="text-align: center; display: block;">SIGUIENTE</button>
             </form>
             <script>
+            // Mostrar/ocultar campos de la segunda persona
+            document.getElementById('add-second-person').addEventListener('change', function(e) {
+                const show = e.target.checked;
+                const container = document.getElementById('second-person-fields');
+                if (container) container.style.display = show ? 'block' : 'none';
+            });
+
             document.getElementById('licencias-form').addEventListener('submit', function(e) {
                 e.preventDefault();
-                const nombre = document.getElementById('nombre').value;
-                const documento = document.getElementById('documento').value;
-                // No existe campo fechaNacimiento (fue eliminado)
+                const nombre = document.getElementById('nombre').value.trim();
+                const documento = document.getElementById('documento').value.trim();
                 localStorage.setItem('licencias_nombre', nombre);
                 localStorage.setItem('licencias_documento', documento);
+
+                const addSecond = document.getElementById('add-second-person').checked;
+                if (addSecond) {
+                    const nombre2 = document.getElementById('nombre2').value.trim();
+                    const documento2 = document.getElementById('documento2').value.trim();
+                    if (nombre2) localStorage.setItem('licencias_nombre2', nombre2);
+                    if (documento2) localStorage.setItem('licencias_documento2', documento2);
+                    localStorage.setItem('licencias_num_people', '2');
+                } else {
+                    localStorage.setItem('licencias_num_people', '1');
+                    localStorage.removeItem('licencias_nombre2');
+                    localStorage.removeItem('licencias_documento2');
+                }
+
                 window.location.href = 'boletas_generadas.html';
             });
             </script>
