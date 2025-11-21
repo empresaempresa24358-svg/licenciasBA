@@ -131,9 +131,14 @@ h2 {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro (Overlay) */
     z-index: 1000; /* Asegura que esté por encima de todo */
-    display: flex;
+    display: none; /* Oculto por defecto; se muestra al agregar la clase .show */
     justify-content: center;
     align-items: center;
+}
+
+/* Mostrar modal cuando tenga la clase .show */
+#modal-overlay.show {
+    display: flex;
 }
 
 #modal-close-button {
@@ -202,3 +207,59 @@ h2 {
     text-align: center;
     margin: 10px 0 0 0;
 }
+
+/* ===== UI improvements for mobile ===== */
+/* Prevent horizontal scrolling and make sidebar collapsible */
+@media (max-width: 900px) {
+    .content-wrapper {
+        flex-direction: column;
+        max-width: 100%;
+        margin: 10px;
+        padding: 0 15px;
+    }
+
+    .sidebar-toggle {
+        display: inline-block;
+        margin: 10px 0;
+        padding: 8px 12px;
+        background-color: #8E44AD;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+
+    .sidebar {
+        display: none; /* hidden by default on small screens */
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .sidebar.open {
+        display: block;
+    }
+
+    .sidebar-nav {
+        max-height: 38vh;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .payment-cards-container {
+        flex-direction: column;
+    }
+
+    .download-button { width: 100%; }
+}
+
+@media (max-width: 600px) {
+    .top-bar { font-size: 13px; padding: 8px 0; }
+    h1 { font-size: 22px; }
+    h2 { font-size: 18px; }
+    .sidebar-nav a { font-size: 13px; }
+    .transfer-info { font-size: 15px; }
+    .boleta-button { width: 100%; }
+}
+
+/* Always prevent horizontal overflow */
+html, body { overflow-x: hidden; }
