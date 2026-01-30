@@ -11,7 +11,10 @@
     <header class="page2-header">
         <div class="logo-area">
             <h1>LICENCIASBA</h1>
-            <img src="images/licencias22.png" alt="Logo Licencias" class="logo-ba">
+            <svg width="100" height="80" viewBox="0 0 100 80" style="flex-shrink: 0;">
+                <rect width="100" height="80" fill="#E8F4F8" rx="4"/>
+                <text x="50" y="50" font-size="28" font-weight="bold" text-anchor="middle" fill="#00B8D4" font-family="Arial">BA</text>
+            </svg>
         </div>
         
         <div class="header-blue-bar">
@@ -118,6 +121,10 @@
                     cenat.textContent = `${i+1}° - BOLETA CENAT`;
                     cenat.style.display = 'inline-block';
                     cenat.style.marginRight = '8px';
+                    cenat.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        alert(`Boleta CENAT para: ${p.name} (DNI: ${p.doc})`);
+                    });
                     wrapper.appendChild(cenat);
 
                     const cepat = document.createElement('a');
@@ -125,6 +132,10 @@
                     cepat.className = 'boleta-button boleta-cepat';
                     cepat.textContent = `${i+1}° - BOLETA CEPAT`;
                     cepat.style.display = 'inline-block';
+                    cepat.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        alert(`Boleta CEPAT para: ${p.name} (DNI: ${p.doc})`);
+                    });
                     wrapper.appendChild(cepat);
 
                     boletasButtons.appendChild(wrapper);
